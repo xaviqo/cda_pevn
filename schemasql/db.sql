@@ -1,6 +1,6 @@
 CREATE DATABASE cdadb;
 
-CREATE TABLE actor {
+CREATE TABLE actor (
     id SERIAL PRIMARY KEY,
     nombre VARCHAR NOT NULL,
     fecha_edad DATE NOT NULL,
@@ -10,43 +10,43 @@ CREATE TABLE actor {
     idioma VARCHAR,
     premios VARCHAR,
     habilidades VARCHAR
-}
+);
 
-CREATE TABLE idioma {
+CREATE TABLE idioma (
     id_actor INTEGER REFERENCES actor(id) NOT NULL,
     idioma STRING NOT NULL,
     porcentaje SMALLINT DEFAULT 0
-}
+);
 
-CREATE TABLE foto {
+CREATE TABLE foto (
     id_actor INTEGER REFERENCES actor(id) NOT NULL,
     uri_foto VARCHAR NOT NULL
-}
+);
 
-CREATE TABLE formacion {
+CREATE TABLE formacion (
     id_actor INTEGER REFERENCES actor(id) NOT NULL,
     fecha VARCHAR,
     formacion VARCHAR NOT NULL
-}
+);
 
-CREATE TABLE experiencia {
+CREATE TABLE experiencia (
     id_actor INTEGER REFERENCES actor(id) NOT NULL,
     fecha VARCHAR,
     experiencia VARCHAR NOT NULL
-}
+);
 
-CREATE TABLE video {
+CREATE TABLE video (
     id_actor INTEGER REFERENCES actor(id) NOT NULL,
     uri_video VARCHAR NOT NULL
-}
+);
 
-CREATE TABLE rrss {
+CREATE TABLE rrss (
     id_actor INTEGER REFERENCES actor(id) NOT NULL,
     link VARCHAR NOT NULL
-}
+);
 
-CREATE TABLE admin {
+CREATE TABLE admin (
     id SERIAL PRIMARY KEY,
-    user VARCHAR NOT NULL,
-    pass VARCHAR NOT NULL
-}
+    admin_usr VARCHAR NOT NULL,
+    admin_pass VARCHAR NOT NULL
+);
