@@ -7,3 +7,5 @@ const pool = new Pool({
     password: '1337',
     database: 'cdadb'
 });
+
+module.exports = pool;

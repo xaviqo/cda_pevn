@@ -1,5 +1,3 @@
-CREATE DATABASE cdadb;
-
 CREATE TABLE actor (
     id SERIAL PRIMARY KEY,
     nombre VARCHAR NOT NULL,
@@ -14,7 +12,7 @@ CREATE TABLE actor (
 
 CREATE TABLE idioma (
     id_actor INTEGER REFERENCES actor(id) NOT NULL,
-    idioma STRING NOT NULL,
+    idioma VARCHAR NOT NULL,
     porcentaje SMALLINT DEFAULT 0
 );
 
