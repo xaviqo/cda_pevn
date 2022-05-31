@@ -1,0 +1,48 @@
+@startuml
+
+class Actor {
+    - id: Integer PK
+    - nombre: Varchar
+    - edad: Date
+    - estatura: Numeric
+    - cabello: Varchar
+    - ojos: Varchar
+    - idioma: Varchar
+    - premios: Varchar
+    - habilidades: Varchar
+}
+
+class Idioma {
+    - idActor: Integer FK
+    - idioma: Integer 
+    - porcentaje: Smallint
+}
+
+class Foto {
+    - idActor: Integer FK
+    - uriFoto: Varchar
+}
+
+class Formacion {
+    - idActor: Integer FK
+    - fecha: String
+    - formacion: Varchar
+}
+
+class Experiencia {
+    - idActor: Integer FK
+    - fecha: String
+    - experiencia: Varchar
+}
+
+class Video {
+    - idActor: Integer FK
+    - uriVideo: Varchar
+}
+
+class Rrss {
+    - idActor: Integer FK
+    - red: Smallint
+    - enlace: Varchar
+}
+@enduml
