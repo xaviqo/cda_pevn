@@ -14,11 +14,14 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(fileUpload({ useTempFiles: true }));
-app.use(history());
-app.use(express.static(path.join(__dirname, 'public')));
 
 // ROUTES
 app.use('/', require('./routes/auth.routes'));
+app.use('/actor', require('./routes/actor.routes'));
+
+// MIDDLEWARES FOR VUE
+app.use(history());
+app.use(express.static(path.join(__dirname, 'public')));
 
 // SETTINGS
 app.set('port', process.env.PORT || 3000);
