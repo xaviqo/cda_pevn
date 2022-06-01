@@ -11,34 +11,40 @@ CREATE TABLE actor (
 );
 
 CREATE TABLE idioma (
+    id SERIAL PRIMARY KEY,
     id_actor INTEGER REFERENCES actor(id) NOT NULL,
     idioma VARCHAR NOT NULL,
     porcentaje SMALLINT DEFAULT 0
 );
 
 CREATE TABLE foto (
+    id SERIAL PRIMARY KEY,
     id_actor INTEGER REFERENCES actor(id) NOT NULL,
     uri_foto VARCHAR NOT NULL
 );
 
 CREATE TABLE formacion (
+    id SERIAL PRIMARY KEY,
     id_actor INTEGER REFERENCES actor(id) NOT NULL,
     fecha VARCHAR,
     formacion VARCHAR NOT NULL
 );
 
 CREATE TABLE experiencia (
+    id SERIAL PRIMARY KEY,
     id_actor INTEGER REFERENCES actor(id) NOT NULL,
     fecha VARCHAR,
     experiencia VARCHAR NOT NULL
 );
 
 CREATE TABLE video (
+    id SERIAL PRIMARY KEY,
     id_actor INTEGER REFERENCES actor(id) NOT NULL,
     uri_video VARCHAR NOT NULL
 );
 
 CREATE TABLE rrss (
+    id SERIAL PRIMARY KEY,
     id_actor INTEGER REFERENCES actor(id) NOT NULL,
     link VARCHAR NOT NULL
 );
