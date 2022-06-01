@@ -4,6 +4,7 @@ import experiencie from "../controllers/experiencie";
 import formation from "../controllers/formation";
 import language from "../controllers/langs";
 import image from "../controllers/image";
+import social from "../controllers/social";
 
 const router = express.Router();
 
@@ -40,6 +41,15 @@ router.delete('/lng/delete/:id_lng', language.delete);
 // IMAGES
 
 router.post('/img/create/:id_a', image.create);
+router.get('/img/get/:id_a', image.readFromActor)
+//TODO: UPDATE DELETE
+
+// SOCIAL MEDIA
+
+router.post('/sm/create/:id_a', social.create);
+//TODO: GET FROM ACTOR, UPDATE, DELETE
+
+//VIDEO
 
 
 module.exports = router;
