@@ -72,3 +72,5 @@ language.delete = async (req, res) => {
         });
     }
 }
+
+module.exports = language;

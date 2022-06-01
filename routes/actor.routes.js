@@ -2,6 +2,8 @@ import express from "express";
 import actor from "../controllers/actor";
 import experiencie from "../controllers/experiencie";
 import formation from "../controllers/formation";
+import language from "../controllers/langs";
+import image from "../controllers/image";
 
 const router = express.Router();
 
@@ -35,6 +37,9 @@ router.get('/lng/get/:id_a', language.readFromActor);
 router.put('/lng/update/:id_lng', language.update);
 router.delete('/lng/delete/:id_lng', language.delete);
 
+// IMAGES
+
+router.post('/img/create/:id_a', image.create);
 
 
 module.exports = router;
