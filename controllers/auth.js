@@ -10,6 +10,9 @@ authentication.logIn = async (req, res) => {
     try {
         const sql = await (await pool.query('SELECT * FROM admin WHERE admin_usr=$1', [usrname])).rows;
         const hash = sql[0].admin_pass;
+        if (sql[0].admin_usr) {
+        
+        }
         if (bcrypt.compareSync(psswd, hash)) {
             console.log("yes");
             res.status(200).json({
