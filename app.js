@@ -7,7 +7,6 @@ import path from "path";
 
 const app = express();
 
-
 // MIDDLEWARES
 app.use(morgan('tiny'));
 app.use(cors());
