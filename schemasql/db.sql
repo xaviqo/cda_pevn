@@ -2,7 +2,6 @@ CREATE TABLE actor (
     id SERIAL PRIMARY KEY,
     nombre VARCHAR NOT NULL,
     fecha_edad DATE NOT NULL,
-    img_principal VARCHAR NOT NULL,
     sexo CHAR(1) NOT NULL,
     estatura NUMERIC,
     cabello VARCHAR,
@@ -23,7 +22,9 @@ CREATE TABLE idioma (
 CREATE TABLE foto (
     id SERIAL PRIMARY KEY,
     id_actor INTEGER REFERENCES actor(id) NOT NULL,
-    uri_foto VARCHAR NOT NULL
+    uri_foto VARCHAR NOT NULL,
+    img_principal BOOLEAN DEFAULT FALSE,
+    mostrar BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE formacion (

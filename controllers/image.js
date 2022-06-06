@@ -3,6 +3,8 @@ import cloudinary from '../libs/cloudinary';
 
 const image = {};
 
+//TODO: GESTIONAR IMAGEN PRINCIPAL Y SHOW IMG
+
 image.create = async (req, res) => {
     const id = req.params.id_a;
     const file = await cloudinary(req.files.actor_img.tempFilePath);
