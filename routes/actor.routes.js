@@ -42,6 +42,7 @@ router.delete('/lng/delete/:id_lng', language.delete);
 
 router.post('/img/create/:id_a', image.create);
 router.get('/img/get/:id_a', image.readFromActor)
+router.get('/img/getMain/:w_a/:h_a/:id_a', image.mainImg);
 //TODO: UPDATE DELETE
 
 // SOCIAL MEDIA
