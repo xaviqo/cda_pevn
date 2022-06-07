@@ -36,17 +36,13 @@ image.readFromActor = async (req, res) => {
 }
 
 image.mainImg = async (req, res) => {
-    const w = req.params.w_a;
-    const h = req.params.h_a;
-    const id = req.params.id_a;
-    const mainImg = await (await pool.query('SELECT uri_foto FROM foto WHERE id_actor=$1 AND img_principal=true', [id])).rows[0];
-    //USAMOS LA API DE CLOUDINARY PARA CROPEAR LA IMAGEN Y USAR EL FACE DETECTOR, LE PASAMOS LA FUNCION PARA RECORTAR EL NOMBRE DE LA URI
-    let cloudinaryImg = 'https://res.cloudinary.com/xaviqo/image/upload/w_'+w+',h_'+h+',c_fill,g_faces/'+getFilenameFromUrl(mainImg.uri_foto);
-    res.status(200).json({
-        cloudinaryImg
-    });
     try {
-
+        const mainImg = await (await pool.query('SELECT uri_foto FROM foto WHERE id_actor=$1 AND img_principal=true', [id])).rows[0];
+        //USAMOS LA API DE CLOUDINARY PARA CROPEAR LA IMAGEN Y USAR EL FACE DETECTOR, LE PASAMOS LA FUNCION PARA RECORTAR EL NOMBRE DE LA URI
+        let cloudinaryImg = 'https://res.cloudinary.com/xaviqo/image/upload/w_'+w+',h_'+h+',c_fill,g_faces/'+getFilenameFromUrl(mainImg.uri_foto);
+        res.status(200).json({
+            cloudinaryImg
+        });
     } catch (error) {
         res.status(500).json({
             message: 'An error ocurred',

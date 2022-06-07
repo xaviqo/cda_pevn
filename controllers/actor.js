@@ -38,8 +38,20 @@ actor.read = async (req, res) => {
 
 actor.readAll = async (req, res) => {
     try {
-        const allActors = await (await pool.query('SELECT * FROM actor')).rows;
-        res.status(200).json({allActors});
+        //TODO: variables como argumento
+        const w = 300;
+        const h = 200;
+        let allActors = await (await pool.query('SELECT a.id, a.nombre, a.fecha_edad, a.sexo, a.estatura, a.cabello, a.ojos, a.idioma, a.premios, a.habilidades, f.uri_foto, f.mostrar FROM actor a JOIN foto f ON a.id = f.id_actor WHERE f.img_principal = TRUE')).rows;
+        console.log(allActors);
+        
+        //USAMOS LA API DE CLOUDINARY PARA CROPEAR LA IMAGEN Y USAR EL FACE DETECTOR, LE PASAMOS LA FUNCION PARA RECORTAR EL NOMBRE DE LA URI
+        for (let i = 0; i < allActors.length; i++) {
+            allActors[i].mainImg = 'https://res.cloudinary.com/xaviqo/image/upload/w_'+w+',h_'+h+',c_fill,g_faces/'+getFilenameFromUrl(allActors[i].uri_foto);
+        }
+
+        res.status(200).json({
+            allActors
+        });
     } catch (error) {
         res.status(500).json({
             message: 'An error has ocurred',
@@ -84,6 +96,14 @@ actor.delete = async (req, res) => {
             error
         })
     }
+}
+
+//FUNCION PARA OBTENER NOMBRE DE ARCHIVO
+
+function getFilenameFromUrl(url) {
+    const pathname = new URL(url).pathname;
+    const index = pathname.lastIndexOf('/');
+    return (-1 !== index) ? pathname.substring(index + 1) : pathname;
 }
 
 module.exports = actor;
