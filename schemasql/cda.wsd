@@ -10,29 +10,13 @@ class Actor {
     - idioma: Varchar
     - premios: Varchar
     - habilidades: Varchar
-}
-
-class Idioma {
-    - idActor: Integer FK
-    - idioma: Integer 
-    - porcentaje: Smallint
+    - formacion: Varchar
+    - experiencia: Varchar
 }
 
 class Foto {
     - idActor: Integer FK
     - uriFoto: Varchar
-}
-
-class Formacion {
-    - idActor: Integer FK
-    - fecha: String
-    - formacion: Varchar
-}
-
-class Experiencia {
-    - idActor: Integer FK
-    - fecha: String
-    - experiencia: Varchar
 }
 
 class Video {

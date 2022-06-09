@@ -9,14 +9,9 @@ CREATE TABLE actor (
     idioma VARCHAR,
     premios VARCHAR,
     habilidades VARCHAR,
+    formacion VARCHAR,
+    experiencia VARCHAR,
     CHECK (sexo in ('m','f'))
-);
-
-CREATE TABLE idioma (
-    id SERIAL PRIMARY KEY,
-    id_actor INTEGER REFERENCES actor(id) NOT NULL,
-    idioma VARCHAR NOT NULL,
-    porcentaje SMALLINT DEFAULT 0
 );
 
 CREATE TABLE foto (
@@ -26,21 +21,6 @@ CREATE TABLE foto (
     img_principal BOOLEAN DEFAULT FALSE,
     mostrar BOOLEAN DEFAULT TRUE
 );
-
-CREATE TABLE formacion (
-    id SERIAL PRIMARY KEY,
-    id_actor INTEGER REFERENCES actor(id) NOT NULL,
-    fecha VARCHAR,
-    formacion VARCHAR NOT NULL
-);
-
-CREATE TABLE experiencia (
-    id SERIAL PRIMARY KEY,
-    id_actor INTEGER REFERENCES actor(id) NOT NULL,
-    fecha VARCHAR,
-    experiencia VARCHAR NOT NULL
-);
-
 CREATE TABLE video (
     id SERIAL PRIMARY KEY,
     id_actor INTEGER REFERENCES actor(id) NOT NULL,
