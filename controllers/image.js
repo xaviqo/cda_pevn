@@ -25,7 +25,7 @@ image.create = async (req, res) => {
 image.readFromActor = async (req, res) => {
     const id = req.params.id_a;
     try {
-        const img = await (await pool.query('SELECT id, uri_foto FROM foto WHERE id_actor=$1', [id])).rows;
+        const img = await (await pool.query('SELECT id, uri_foto, img_principal, mostrar FROM foto WHERE id_actor=$1', [id])).rows;
         res.status(200).json({ img });
     } catch (error) {
         res.status(500).json({

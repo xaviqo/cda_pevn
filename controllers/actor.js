@@ -46,7 +46,7 @@ actor.readAll = async (req, res) => {
         //TODO: variables como argumento
         const w = 300;
         const h = 200;
-        let allActors = await (await pool.query('SELECT a.id, a.nombre, a.fecha_edad, a.sexo, a.estatura, a.cabello, a.ojos, a.idioma, a.premios, a.habilidades, a.experiencia, a.formacion, f.uri_foto, f.mostrar FROM actor a LEFT JOIN foto f ON a.id = f.id_actor')).rows;
+        let allActors = await (await pool.query('SELECT a.id, a.nombre, a.fecha_edad, a.sexo, a.estatura, a.cabello, a.ojos, a.idioma, a.premios, a.habilidades, a.experiencia, a.formacion, f.uri_foto, f.mostrar FROM actor a LEFT JOIN foto f ON a.id = f.id_actor WHERE mostrar = TRUE AND img_principal = true ')).rows;
         console.log(allActors);
 
         //USAMOS LA API DE CLOUDINARY PARA CROPEAR LA IMAGEN Y USAR EL FACE DETECTOR, LE PASAMOS LA FUNCION PARA RECORTAR EL NOMBRE DE LA URI
