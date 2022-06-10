@@ -8,12 +8,13 @@ const image = {};
 image.create = async (req, res) => {
     const id = req.params.id_a;
     const file = await cloudinary(req.files.actor_img.tempFilePath);
+    await pool.query('INSERT INTO foto (id_actor,uri_foto,img_principal,mostrar) VALUES($1,$2,true,true)', [id, file]);
+    res.status(200).json({
+        message: 'Image uploaded successfully',
+        img: { file }
+    });
     try {
-        await pool.query('INSERT INTO foto (id_actor,uri_foto) VALUES($1,$2)', [id, file]);
-        res.status(200).json({
-            message: 'Image uploaded successfully',
-            img: { file }
-        });
+
     } catch (error) {
         res.status(500).json({
             message: 'An error ocurred',
@@ -50,6 +51,9 @@ image.mainImg = async (req, res) => {
         });
     }
 }
+
+// PARA FUTURO EDITAR IMG PRINC:     await pool.query('UPDATE foto SET img_principal = false WHERE id_actor = $1 AND img_principal = true',[id]);
+
 
 //FUNCION PARA OBTENER NOMBRE DE ARCHIVO
 
