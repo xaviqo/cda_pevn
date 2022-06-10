@@ -36,6 +36,20 @@ image.readFromActor = async (req, res) => {
     }
 }
 
+image.chgMain = async (req, res) => {
+    const { actor, image } = req.body;
+    try {
+        await pool.query('UPDATE foto SET img_principal = false WHERE id_actor = $1',[actor]);
+        await pool.query('UPDATE foto SET img_principal = true WHERE id_actor = $1 AND id = $2',[actor,image]);
+        res.status(200).json({ message: 'Imagen principal cambiada' });
+    } catch (error) {
+        res.status(500).json({
+            message: 'An error ocurred',
+            error
+        }); 
+    }
+}
+
 image.mainImg = async (req, res) => {
     try {
         const mainImg = await (await pool.query('SELECT uri_foto FROM foto WHERE id_actor=$1 AND img_principal=true', [id])).rows[0];
@@ -51,8 +65,6 @@ image.mainImg = async (req, res) => {
         });
     }
 }
-
-// PARA FUTURO EDITAR IMG PRINC:     await pool.query('UPDATE foto SET img_principal = false WHERE id_actor = $1 AND img_principal = true',[id]);
 
 
 //FUNCION PARA OBTENER NOMBRE DE ARCHIVO

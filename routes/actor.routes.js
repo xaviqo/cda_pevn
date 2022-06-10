@@ -16,6 +16,7 @@ router.delete('/delete/:id_a', actor.delete);
 // IMAGES
 
 router.post('/img/create/:id_a', image.create);
+router.post('/img/chg/main/', image.chgMain);
 router.get('/img/get/:id_a', image.readFromActor)
 router.get('/img/getMain/:w_a/:h_a/:id_a', image.mainImg);
 //TODO: UPDATE DELETE
