@@ -6,18 +6,36 @@ const image = {};
 //TODO: GESTIONAR IMAGEN PRINCIPAL Y SHOW IMG
 
 image.create = async (req, res) => {
-    const id = req.params.id_a;
-    const file = await cloudinary(req.files.actor_img.tempFilePath);
-    await pool.query('INSERT INTO foto (id_actor,uri_foto,img_principal,mostrar) VALUES($1,$2,true,true)', [id, file]);
-    res.status(200).json({
-        message: 'Image uploaded successfully',
-        img: { file }
-    });
-    try {
 
+    try {
+        const id = req.params.id_a;
+        const file = await cloudinary(req.files.actor_img.tempFilePath);
+        await pool.query('INSERT INTO foto (id_actor,uri_foto,img_principal,mostrar) VALUES($1,$2,true,true)', [id, file]);
+        res.status(200).json({
+            message: 'Imagen subida correctamente',
+            img: { file }
+        });
     } catch (error) {
         res.status(500).json({
-            message: 'An error ocurred',
+            message: 'Ha ocurrido un error',
+            error
+        });
+    }
+}
+
+image.newImg = async (req, res) => {
+
+    try {
+        const id = req.params.id_a;
+        const file = await cloudinary(req.files.new_img.tempFilePath);
+        await pool.query('INSERT INTO foto (id_actor,uri_foto,img_principal,mostrar) VALUES($1,$2,false,true)', [id, file]);
+        res.status(200).json({
+            message: 'Imagen subida correctamente',
+            img: { file }
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: 'Ha ocurrido un error',
             error
         });
     }
@@ -30,7 +48,7 @@ image.readFromActor = async (req, res) => {
         res.status(200).json({ img });
     } catch (error) {
         res.status(500).json({
-            message: 'An error ocurred',
+            message: 'Ha ocurrido un error',
             error
         });
     }
@@ -44,7 +62,7 @@ image.chgMain = async (req, res) => {
         res.status(200).json({ message: 'Imagen principal cambiada' });
     } catch (error) {
         res.status(500).json({
-            message: 'An error ocurred',
+            message: 'Ha ocurrido un error',
             error
         }); 
     }
@@ -60,7 +78,20 @@ image.mainImg = async (req, res) => {
         });
     } catch (error) {
         res.status(500).json({
-            message: 'An error ocurred',
+            message: 'Ha ocurrido un error',
+            error
+        });
+    }
+}
+
+image.delete = async (req, res) => {
+    const id = req.params.id_img;
+    try {
+        await pool.query('DELETE FROM foto WHERE id=$1', [id]);
+        res.status(200).json({ message: 'Imagen eliminada' });
+    } catch (error) {
+        res.status(500).json({
+            message: 'Ha ocurrido un error',
             error
         });
     }

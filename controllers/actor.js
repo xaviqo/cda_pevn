@@ -96,6 +96,7 @@ actor.update = async (req, res) => {
 actor.delete = async (req, res) => {
     const id = req.params.id_a;
     try {
+        await pool.query('DELETE FROM foto WHERE id_actor=$1', [id]);
         await pool.query('DELETE FROM actor WHERE id=$1', [id]);
         res.status(200).json({
             message: 'Actor eliminado de la base de datos',
