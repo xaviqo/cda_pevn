@@ -6,8 +6,8 @@ actor.create = async (req, res) => {
     const {
         nombre, fecha_edad, estatura,
         cabello, ojos, idioma,
-        premios, habilidades, sexo, 
-        experiencia, formacion, 
+        premios, habilidades, sexo,
+        experiencia, formacion,
     } = req.body;
     await pool.query('INSERT INTO actor (nombre,fecha_edad,estatura,cabello,ojos,idioma,premios,habilidades,sexo,experiencia,formacion) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)', [nombre, fecha_edad, estatura,
         cabello, ojos, idioma,
@@ -15,7 +15,7 @@ actor.create = async (req, res) => {
     let actor = req.body;
     actor.id = await (await pool.query('SELECT max(id) FROM actor')).rows[0].max;
     res.status(200).json({
-        message: 'Registro de '+nombre+' añadido',
+        message: 'Registro de ' + nombre + ' añadido',
         actor
     });
     try {
@@ -42,26 +42,36 @@ actor.read = async (req, res) => {
 }
 
 actor.readAll = async (req, res) => {
+    //TODO: variables como argumento
+    const w = 300;
+    const h = 200;
+    let allActors = [{}];
+    let count = 0;
+
     try {
-        //TODO: variables como argumento
-        const w = 300;
-        const h = 200;
-        let allActors = await (await pool.query('SELECT a.id, a.nombre, a.fecha_edad, a.sexo, a.estatura, a.cabello, a.ojos, a.idioma, a.premios, a.habilidades, a.experiencia, a.formacion, f.uri_foto, f.mostrar FROM actor a LEFT JOIN foto f ON a.id = f.id_actor WHERE mostrar = TRUE AND img_principal = true ')).rows;
-        console.log(allActors);
+    let query = await (await pool.query('SELECT a.id, a.nombre, f.uri_foto, f.mostrar FROM actor a LEFT JOIN foto f ON a.id = f.id_actor WHERE mostrar = TRUE AND img_principal = true ')).rows;
 
-        //USAMOS LA API DE CLOUDINARY PARA CROPEAR LA IMAGEN Y USAR EL FACE DETECTOR, LE PASAMOS LA FUNCION PARA RECORTAR EL NOMBRE DE LA URI
-        for (let i = 0; i < allActors.length; i++) {
-            if (allActors[i].uri_foto == null) {
-                allActors[i].mainImg = null
-            } else {
-                allActors[i].mainImg = 'https://res.cloudinary.com/xaviqo/image/upload/w_' + w + ',h_' + h + ',c_fill,g_faces/' + getFilenameFromUrl(allActors[i].uri_foto);
+    //ATRIBUTO PARA QUE LA URL DE CADA ACTOR TENGA GUIONES EN VEZ DE ESPACIOS
+    query.forEach(actor => {
+        allActors[count] = actor;
+        allActors[count].url = actorUrlName(actor.nombre);
+        count++;
+    });
+    console.log(allActors);
 
-            }
+    //USAMOS LA API DE CLOUDINARY PARA CROPEAR LA IMAGEN Y USAR EL FACE DETECTOR, LE PASAMOS LA FUNCION PARA RECORTAR EL NOMBRE DE LA URI
+    for (let i = 0; i < allActors.length; i++) {
+        if (allActors[i].uri_foto == null) {
+            allActors[i].mainImg = null
+        } else {
+            allActors[i].mainImg = 'https://res.cloudinary.com/xaviqo/image/upload/w_' + w + ',h_' + h + ',c_fill,g_faces/' + getFilenameFromUrl(allActors[i].uri_foto);
+
         }
+    }
 
-        res.status(200).json({
-            allActors
-        });
+    res.status(200).json({
+        allActors
+    });
     } catch (error) {
         res.status(500).json({
             message: 'An error has ocurred',
@@ -82,7 +92,7 @@ actor.update = async (req, res) => {
             cabello, ojos, idioma,
             premios, habilidades, sexo, experiencia, formacion, id]);
         res.status(200).json({
-            message: 'Registro de '+nombre+' editado',
+            message: 'Registro de ' + nombre + ' editado',
 
         });
     } catch (error) {
@@ -115,6 +125,14 @@ function getFilenameFromUrl(url) {
     const pathname = new URL(url).pathname;
     const index = pathname.lastIndexOf('/');
     return (-1 !== index) ? pathname.substring(index + 1) : pathname;
+}
+
+//FUNCION PARA ADAPTAR URLS AL PREFIL DEL ACTOR
+
+function actorUrlName(name) {
+    let result = name.trim().toLowerCase().split(' ').join('-');
+    console.log(result);
+    return result;
 }
 
 module.exports = actor;
