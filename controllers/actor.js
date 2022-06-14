@@ -31,12 +31,20 @@ actor.create = async (req, res) => {
 actor.read = async (req, res) => {
     const id = req.params.id_a;
     const actor = await (await pool.query('SELECT * FROM actor WHERE id=$1', [id])).rows[0];
-    actor.premiosHtml = [];
-    actor.formacionHtml = [];
-    actor.experienciaHtml = [];
-    actor.premiosHtml = parteToHtml(actor.premios);
-    actor.experienciaHtml = parteToHtml(actor.experiencia);
-    actor.formacionHtml = parteToHtml(actor.formacion);
+
+    if (actor.premios !== null){
+        actor.premios = arrayToStr(parteToHtml(actor.premios));
+    }
+
+    if (actor.experiencia !== null){
+        actor.experiencia = arrayToStr(parteToHtml(actor.experiencia));
+    }
+
+    if (actor.formacion !== null){
+        actor.formacion = arrayToStr(parteToHtml(actor.formacion));
+        console.log(actor.formacion);
+    }
+
     res.status(200).json({ actor });
     try {
 
@@ -136,6 +144,14 @@ function getFilenameFromUrl(url) {
 
 //FUNCION PARA ADAPTAR URLS AL PREFIL DEL ACTOR
 
+function arrayToStr(arr) {
+    let str = '';
+    arr.forEach(line => {
+        str += line;
+    });
+    return str;
+}
+
 function actorUrlName(name) {
     let result = name.trim().toLowerCase().split(' ').join('-');
     return result;
@@ -145,7 +161,7 @@ function parteToHtml(str) {
     let result;
     if (str != null) {
         if (str.length > 1) {
-            result = splitDateInfo(convertLines(numeralToBold(str)));
+            result = convertToVue(splitDateInfo(convertLines(numeralToBold(str))));
         } else {
             result = null;
         }
@@ -161,11 +177,42 @@ function numeralToBold(str) {
     let arr = []
     for (let i = 0; i < desharped.length; i++) {
         if (i % 2 == 0) {
-            arr[i] = "<h3>" + desharped[i] + "</h3>";
+            arr[i] = `<v-toolbar color="white" elevation="1"><v-toolbar-title>${desharped[i]}</v-toolbar-title></v-toolbar><v-list disabled>`;
         } else {
             arr[i] = desharped[i];
         }
     }
+    return arr;
+}
+
+function convertToVue(str) {
+    let arr = [];
+    let twoGroups = 0 //SI HAY DOS, SE AÑADE UN HTML EXTRA (IF > 1)
+    let count = 0;
+    str.forEach(line => {
+        count++;
+        let aux;
+        if (line.match(/\(([^\)]+)\)/)) {
+            aux = line.split(/\(([^\)]+)\)/);
+            aux = aux.filter(e => e.length > 1);
+            aux = `<v-list-item-action><v-list-item-action-text>${aux}</v-list-item-action-text></v-list-item-action></v-list-item><v-divider></v-divider>`
+        } else if (line.includes('v-toolbar')) {
+            twoGroups++;
+            if (twoGroups > 1){
+                aux = '</v-list-item-group></v-list>'+line
+            } else {
+                aux = line;
+            }
+        } else {
+            aux = `<v-list-item-group><v-list-item><v-list-item-content><v-list-item-title>${line}</v-list-item-title></v-list-item-content>`
+        }
+        if (count == 1){
+            aux = '<v-card class="mx-auto">'+aux
+        } else if (count == str.length){
+            aux = aux+'</v-card>'
+        }
+        arr.push(aux);
+    });
     return arr;
 }
 
