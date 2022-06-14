@@ -69,6 +69,9 @@ image.chgMain = async (req, res) => {
 }
 
 image.mainImg = async (req, res) => {
+    const id = req.params.id_a;
+    const w = req.params.w_a;
+    const h = req.params.h_a;
     try {
         const mainImg = await (await pool.query('SELECT uri_foto FROM foto WHERE id_actor=$1 AND img_principal=true', [id])).rows[0];
         //USAMOS LA API DE CLOUDINARY PARA CROPEAR LA IMAGEN Y USAR EL FACE DETECTOR, LE PASAMOS LA FUNCION PARA RECORTAR EL NOMBRE DE LA URI

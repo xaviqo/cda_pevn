@@ -22,7 +22,7 @@ router.get('/img/get/:id_a', image.readFromActor)
 router.delete('/img/delete/:id_img', image.delete);
 
 // SIN USAR PERO INTERESANTE
-// router.get('/img/getMain/:w_a/:h_a/:id_a', image.mainImg);
+router.get('/img/getMain/:w_a/:h_a/:id_a', image.mainImg);
 
 // SOCIAL MEDIA
 
