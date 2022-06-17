@@ -33,15 +33,15 @@ actor.read = async (req, res) => {
     const actor = await (await pool.query('SELECT * FROM actor WHERE id=$1', [id])).rows[0];
 
     if (actor.premios !== null) {
-        actor.premios = jsonizer(pullGroups(actor.premios));
+        actor.premiosJson = jsonizer(pullGroups(actor.premios));
     }
 
     if (actor.experiencia !== null) {
-        actor.experiencia = jsonizer(pullGroups(actor.experiencia));
+        actor.experienciaJson = jsonizer(pullGroups(actor.experiencia));
     }
 
     if (actor.formacion !== null) {
-        actor.formacion = jsonizer(pullGroups(actor.formacion));
+        actor.formacionJson = jsonizer(pullGroups(actor.formacion));
     }
 
     res.status(200).json({ actor });

@@ -87,6 +87,24 @@ image.mainImg = async (req, res) => {
     }
 }
 
+image.remainingImgs = async (req, res) => {
+    const id = req.params.id_a;
+    const w = req.params.w_a;
+    const h = req.params.h_a;
+    try {
+        const remImgs = await (await pool.query('SELECT uri_foto FROM foto WHERE id_actor=$1 AND img_principal=false', [id])).rows;
+        let remainingImgs = remainingToArray(remImgs,w,h);
+        res.status(200).json({
+            remainingImgs
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: 'Ha ocurrido un error',
+            error
+        });
+    }
+}
+
 image.delete = async (req, res) => {
     const id = req.params.id_img;
     try {
@@ -107,6 +125,14 @@ function getFilenameFromUrl(url) {
     const pathname = new URL(url).pathname;
     const index = pathname.lastIndexOf('/');
     return (-1 !== index) ? pathname.substring(index + 1) : pathname;
+}
+
+function remainingToArray(imgs,w,h) {
+    let arr = [];
+    imgs.forEach(img => {
+        arr.push('https://res.cloudinary.com/xaviqo/image/upload/w_'+w+',h_'+h+',c_fill,g_faces/'+getFilenameFromUrl(img.uri_foto));
+    });
+    return arr;
 }
 
 module.exports = image;
