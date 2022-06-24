@@ -23,8 +23,10 @@ router.delete('/img/delete/:id_img', image.delete);
 router.get('/img/getMain/:w_a/:h_a/:id_a', image.mainImg);
 router.get('/img/getRemain/:w_a/:h_a/:id_a', image.remainingImgs);
 
-
+// RRSS
 router.post('/sm/create/:id_a', social.create);
+
+
 //TODO: GET FROM ACTOR, UPDATE, DELETE
 
 //VIDEO
