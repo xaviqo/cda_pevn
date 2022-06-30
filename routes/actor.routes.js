@@ -2,6 +2,7 @@ import express from "express";
 import actor from "../controllers/actor";
 import image from "../controllers/image";
 import social from "../controllers/social";
+import langs from "../controllers/langs";
 
 const router = express.Router();
 
@@ -22,6 +23,14 @@ router.get('/img/get/:id_a', image.readFromActor);
 router.delete('/img/delete/:id_img', image.delete);
 router.get('/img/getMain/:w_a/:h_a/:id_a', image.mainImg);
 router.get('/img/getRemain/:w_a/:h_a/:id_a', image.remainingImgs);
+
+// LANG
+
+router.get('/lang/get/:id_a', langs.getLangs);
+router.post('/lang/insert', langs.insertLang);
+router.put('/lang/update/', langs.updateLang);
+router.delete('/lang/delete/:id_l', langs.deleteLang);
+
 
 // RRSS
 router.post('/sm/create/:id_a', social.create);

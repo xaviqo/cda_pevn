@@ -3,8 +3,8 @@ import cloudinary from 'cloudinary';
 cloudinary.config({
     //reconfigurar con variables de entorno
     cloud_name: 'xaviqo',
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SEC
+    api_key: '454356868378879',
+    api_secret: 'Uik2ikc0KpU2hLpfy3esQRk_TY4',
 });
 
 module.exports = async (file) => {

@@ -5,19 +5,22 @@ const actor = {};
 actor.create = async (req, res) => {
     const {
         nombre, fecha_edad, estatura,
-        cabello, ojos, idioma,
+        cabello, ojos,
         premios, habilidades, sexo,
         experiencia, formacion,
     } = req.body;
-    await pool.query('INSERT INTO actor (nombre,fecha_edad,estatura,cabello,ojos,idioma,premios,habilidades,sexo,experiencia,formacion) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)', [nombre, fecha_edad, estatura,
-        cabello, ojos, idioma,
-        premios, habilidades, sexo, experiencia, formacion]);
+
+    await pool.query('INSERT INTO actor (nombre,fecha_edad,estatura,cabello,ojos,premios,habilidades,sexo,experiencia,formacion) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)', [nombre, fecha_edad, estatura, cabello, ojos, premios, habilidades, sexo, experiencia, formacion]);
+
     let actor = req.body;
     actor.id = await (await pool.query('SELECT max(id) FROM actor')).rows[0].max;
+
+
     res.status(200).json({
         message: 'Registro de ' + nombre + ' añadido',
         actor
     });
+
     try {
 
     } catch (error) {
@@ -30,22 +33,22 @@ actor.create = async (req, res) => {
 
 actor.read = async (req, res) => {
     const id = req.params.id_a;
-    const actor = await (await pool.query('SELECT * FROM actor WHERE id=$1', [id])).rows[0];
 
-    if (actor.premios !== null) {
-        actor.premiosJson = jsonizer(pullGroups(actor.premios));
-    }
-
-    if (actor.experiencia !== null) {
-        actor.experienciaJson = jsonizer(pullGroups(actor.experiencia));
-    }
-
-    if (actor.formacion !== null) {
-        actor.formacionJson = jsonizer(pullGroups(actor.formacion));
-    }
-
-    res.status(200).json({ actor });
     try {
+        const actor = await (await pool.query('SELECT * FROM actor WHERE id=$1', [id])).rows[0];
+
+        if (actor.premios !== null) {
+            actor.premiosJson = jsonizer(pullGroups(actor.premios));
+        }
+
+        if (actor.experiencia !== null) {
+            actor.experienciaJson = jsonizer(pullGroups(actor.experiencia));
+        }
+
+        if (actor.formacion !== null) {
+            actor.formacionJson = jsonizer(pullGroups(actor.formacion));
+        }
+        res.status(200).json({ actor });
 
     } catch (error) {
         res.status(500).json({
@@ -56,7 +59,6 @@ actor.read = async (req, res) => {
 }
 
 actor.readAll = async (req, res) => {
-    //TODO: variables como argumento
     const w = 300;
     const h = 200;
     let allActors = [{}];
@@ -65,14 +67,12 @@ actor.readAll = async (req, res) => {
     try {
         let query = await (await pool.query('SELECT a.id, a.nombre, f.uri_foto, f.mostrar FROM actor a LEFT JOIN foto f ON a.id = f.id_actor WHERE mostrar = TRUE AND img_principal = true ')).rows;
 
-        //ATRIBUTO PARA QUE LA URL DE CADA ACTOR TENGA GUIONES EN VEZ DE ESPACIOS
         query.forEach(actor => {
             allActors[count] = actor;
             allActors[count].url = actorUrlName(actor.nombre);
             count++;
         });
 
-        //USAMOS LA API DE CLOUDINARY PARA CROPEAR LA IMAGEN Y USAR EL FACE DETECTOR, LE PASAMOS LA FUNCION PARA RECORTAR EL NOMBRE DE LA URI
         for (let i = 0; i < allActors.length; i++) {
             if (allActors[i].uri_foto == null) {
                 allActors[i].mainImg = null
@@ -91,18 +91,18 @@ actor.readAll = async (req, res) => {
             error
         });
     }
-}
+} 
 
 actor.update = async (req, res) => {
     const id = req.params.id_a;
     const {
         nombre, fecha_edad, estatura,
-        cabello, ojos, idioma,
+        cabello, ojos,
         premios, habilidades, sexo, experiencia, formacion
     } = req.body;
     try {
-        await pool.query('UPDATE actor SET nombre=$1, fecha_edad=$2, estatura=$3, cabello=$4, ojos=$5, idioma=$6, premios=$7, habilidades=$8, sexo=$9, experiencia=$10, formacion=$11 WHERE id=$12', [nombre, fecha_edad, estatura,
-            cabello, ojos, idioma,
+        await pool.query('UPDATE actor SET nombre=$1, fecha_edad=$2, estatura=$3, cabello=$4, ojos=$5, premios=$6, habilidades=$7, sexo=$8, experiencia=$9, formacion=$10 WHERE id=$11', [nombre, fecha_edad, estatura,
+            cabello, ojos,
             premios, habilidades, sexo, experiencia, formacion, id]);
         res.status(200).json({
             message: 'Registro de ' + nombre + ' editado',
@@ -119,6 +119,7 @@ actor.update = async (req, res) => {
 actor.delete = async (req, res) => {
     const id = req.params.id_a;
     try {
+        await pool.query('DELETE FROM idioma WHERE id_actor = $1', [id]);
         await pool.query('DELETE FROM foto WHERE id_actor=$1', [id]);
         await pool.query('DELETE FROM actor WHERE id=$1', [id]);
         res.status(200).json({
@@ -160,11 +161,9 @@ function pullGroups(str) {
         };
 
         if (count % 2 == 0) {
-            //DETECTADO GRUPO - DEJO COMILLAS POR SI QUIERO INTRODUCIR HTML
             obj.type = true;
             obj.text = line.trim();
         } else {
-            //RESTO SIN PROCESAR
             obj.type = false;
             obj.text = line;
         }
@@ -198,8 +197,8 @@ function jsonizer(str) {
 
                 let data = e.split('*').filter(e => e.length > 1);
 
-                obj.date = data[0].trim();
-                obj.text = data[1].trim();
+                obj.date = data[0];
+                obj.text = data[1];
 
                 arr.push(obj);
 
