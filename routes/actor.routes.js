@@ -44,7 +44,7 @@ router.post('/vid/insert', video.save);
 
 router.post('/sm/insert/', social.create);
 router.get('/sm/get/:id_a', social.load);
-router.put('/sm/update/', social.load);
+router.put('/sm/update/', social.update);
 
 
 //TODO: GET FROM ACTOR, UPDATE, DELETE

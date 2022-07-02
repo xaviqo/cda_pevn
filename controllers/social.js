@@ -35,6 +35,7 @@ social.load = async (req, res) => {
 
 social.update = async (req, res) => {
     const { id_actor,tw,fb,yt,ig } = req.body;
+    console.log(req.body);
     try {
         await pool.query('UPDATE rrss SET tw=$1, fb=$2, yt=$3, ig=$4 WHERE id_actor=$5', [tw,fb,yt,ig,id_actor]);
         res.status(200).json({
