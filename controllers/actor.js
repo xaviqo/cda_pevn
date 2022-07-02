@@ -121,6 +121,7 @@ actor.delete = async (req, res) => {
     try {
         await pool.query('DELETE FROM idioma WHERE id_actor = $1', [id]);
         await pool.query('DELETE FROM foto WHERE id_actor=$1', [id]);
+        await pool.query('DELETE FROM rrss WHERE id_actor=$1', [id]);
         await pool.query('DELETE FROM actor WHERE id=$1', [id]);
         res.status(200).json({
             message: 'Actor eliminado de la base de datos',
@@ -215,6 +216,5 @@ function jsonizer(str) {
     return arr;
 
 }
-
 
 module.exports = actor;

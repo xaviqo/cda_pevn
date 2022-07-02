@@ -3,6 +3,7 @@ import actor from "../controllers/actor";
 import image from "../controllers/image";
 import social from "../controllers/social";
 import langs from "../controllers/langs";
+import video from "../controllers/video";
 
 const router = express.Router();
 
@@ -31,9 +32,19 @@ router.post('/lang/insert', langs.insertLang);
 router.put('/lang/update/', langs.updateLang);
 router.delete('/lang/delete/:id_l', langs.deleteLang);
 
+// VIDEO
+
+router.get('/vid/get/:id_a', video.get);
+router.get('/vid/get/one/:id_a', video.getOne);
+router.delete('/vid/delete/:id_v', video.delete);
+router.post('/vid/insert', video.save);
+
 
 // RRSS
-router.post('/sm/create/:id_a', social.create);
+
+router.post('/sm/insert/', social.create);
+router.get('/sm/get/:id_a', social.load);
+router.put('/sm/update/', social.load);
 
 
 //TODO: GET FROM ACTOR, UPDATE, DELETE

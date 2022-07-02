@@ -33,14 +33,18 @@ CREATE TABLE foto (
 CREATE TABLE video (
     id SERIAL PRIMARY KEY,
     id_actor INTEGER REFERENCES actor(id) NOT NULL,
+    descripcion VARCHAR,
     uri_video VARCHAR NOT NULL
 );
 
 CREATE TABLE rrss (
-    id SERIAL PRIMARY KEY,
     id_actor INTEGER REFERENCES actor(id) NOT NULL,
-    link VARCHAR NOT NULL
+    tw VARCHAR,
+    fb VARCHAR,
+    yt VARCHAR,
+    ig VARCHAR
 );
+
 
 CREATE TABLE admin (
     id SERIAL PRIMARY KEY,
