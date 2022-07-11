@@ -1,4 +1,4 @@
-import pool from '../db/keys';
+const pool = require('../db/keys');
 
 const actor = {};
 
@@ -212,7 +212,6 @@ function jsonizer(str) {
 
     });
 
-    console.log(arr);
     return arr;
 
 }

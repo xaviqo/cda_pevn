@@ -1,4 +1,5 @@
-import cloudinary from 'cloudinary';
+const cloudinary = require('cloudinary');
+
 
 cloudinary.config({
     //reconfigurar con variables de entorno

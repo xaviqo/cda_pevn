@@ -1,7 +1,6 @@
-import express from "express";
-import authentication from '../controllers/auth';
-import mailer from '../controllers/mailer'
-
+const express = require('express');
+const authentication = require('../controllers/auth');
+const mailer = require('../controllers/mailer');
 const router = express.Router();
 
 //login

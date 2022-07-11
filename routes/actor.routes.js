@@ -1,9 +1,10 @@
-import express from "express";
-import actor from "../controllers/actor";
-import image from "../controllers/image";
-import social from "../controllers/social";
-import langs from "../controllers/langs";
-import video from "../controllers/video";
+const express = require('express');
+const actor = require('../controllers/actor');
+const image = require('../controllers/image');
+const social = require('../controllers/social');
+const langs = require('../controllers/langs');
+const video = require('../controllers/video');
+
 
 const router = express.Router();
 

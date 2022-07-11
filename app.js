@@ -1,9 +1,9 @@
-import express from "express";
-import morgan from "morgan";
-import cors from "cors";
-import fileUpload from "express-fileupload";
-import history from "connect-history-api-fallback";
-import path from "path";
+const express = require('express');
+const morgan = require('morgan');
+const cors = require('cors');
+const fileUpload = require('express-fileupload');
+const history = require('connect-history-api-fallback');
+const path = require('path');
 
 const app = express();
 

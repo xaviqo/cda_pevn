@@ -1,4 +1,4 @@
-import pool from '../db/keys';
+const pool = require('../db/keys');
 
 const video = {};
 

@@ -1,5 +1,5 @@
-import pool from '../db/keys'
-import cloudinary from '../libs/cloudinary';
+const pool = require('../db/keys');
+const cloudinary = require('../libs/cloudinary');
 
 const image = {};
 

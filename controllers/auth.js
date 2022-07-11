@@ -1,5 +1,5 @@
-import pool from '../db/keys';
-import bcrypt from 'bcryptjs';
+const pool = require('../db/keys');
+const bcrypt = require('bcryptjs');
 
 const authentication = {};
 
